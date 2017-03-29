@@ -1,0 +1,114 @@
+Why does webpack exist? Webpack, at its core, is a code bundler. It takes your code, transforms and bundles it, then returns a brand new version of your code.
+
+So where Webpack really shines is you're able to tell it every transformation your code needs to make, and it will do them and output a bundle file for you full of those changes (and some other helpful things as well like minification if you desire).
+
+1) Webpack needs to know the starting point of your application, or your root JavaScript file.
+
+2) Webpack needs to know which transformations to make on your code.
+
+3) Webpack needs to know to which location it should save the new transformed code.
+
+The first thing we need to do is create a file which is going to contain our Webpack configurations. Conveniently, this file should be named webpack.config.js and be located in the root directory of our project. Make sure that this file exports an object which is going to represent our configurations for Webpack.
+
+First up, telling webpack where the entry point of our application is located.
+
+  // In webpack.config.js
+  module.exports = {
+    entry: [
+      './app/index.js'
+    ]
+  }
+
+All we do is give our object a property of entry and a value which is an array with a string which points to our root JavaScript file in our app.
+
+Now that we've told Webpack where to start, we need to tell it which transformations to actually make. This is where loaders will come in handy.
+
+  // In webpack.config.js
+  module.exports = {
+    entry: [
+      './app/index.js'
+    ],
+    module: {
+      loaders: []
+    }
+  }
+
+Loaders example:
+  loaders: [
+        {test: /\.coffee$/, exclude: /node_modules/, loader: "coffee-loader"}
+      ]
+The first is which file type to run the specific transformation on.
+The next item is which directories should be included or excluded from being transformed.
+The last thing is the specific loader we want to run.
+---> To add more loaders, NPM install the specific loader then add a new object to the loaders array.
+
+Last step is specifying where Webpack should output the new transformed code.
+
+  // In webpack.config.js
+  module.exports = {
+    entry: [
+      './app/index.js'
+    ],
+    module: {
+      loaders: [
+        {test: /\.coffee$/, exclude: /node_modules/, loader: "coffee-loader"}
+      ]
+    },
+    output: {
+      filename: "index_bundle.js",
+      path: __dirname + '/dist'
+    },
+  }
+
+Our code we're developing with is found in the app folder and our transformed code is in the dist folder. Now you can visually see the issue. We want to change the index.html located in the app folder but the index.html file that the browser is actually going to be using is located in the dist folder.
+Figure out a way so that whenever webpack runs, our /app/index.html gets copied over to /dist/index.html
+This plugin is the html-webpack-plugin. As always, you'll need to run npm install --save-dev html-webpack-plugin
+
+First thing, we'll need to create a new instance of HTMLWebpackPlugin and we'll need to specify three things.
+give it a template of what we want the newly created file to look like
+give it a filename
+third option is inject and is where you would like to inject that script - the 'head' or the 'body'
+
+  // In webpack.config.js
+  var HtmlWebpackPlugin = require('html-webpack-plugin')
+  var HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
+    template: __dirname + '/app/index.html',
+    filename: 'index.html',
+    inject: 'body'
+  });
+  module.exports = {
+    entry: [
+      './app/index.js'
+    ],
+    module: {
+      loaders: [
+        {test: /\.coffee$/, exclude: /node_modules/, loader: "coffee-loader"}
+      ]
+    },
+    output: {
+      filename: "index_bundle.js",
+      path: __dirname + '/dist'
+    },
+    plugins: [HTMLWebpackPluginConfig]
+  };
+
+Now if we run webpack from our command line, inside of our dist folder we'll have two files. index_bundle.js and index.html. index_bundle.js is the result of taking our entry code and running it through our loaders. While index.html was created on the fly with HTMLWebpackPluginConfig.
+
+In the root directory of your app (or wherever webpack.config.js is located), you can run webpack from your terminal and that will do a one time run through of your webpack settings. However, this can be kind of a pain to keep having to run the command over and over whenever you change anything. To fix this, run webpack -w and that will watch your files and re-execute webpack whenever any of the files Webpack is concerned about changes. Lastly, if you're wanting to ship to production, you can run webpack -p and that will run through the normal transformations as well as minify your code.
+
+----->Babel
+npm install --save-dev babel-core babel-loader babel-preset-react. babel-core is babel itself, babel-loader is the webpack loader we'll use, and babel-preset-react is to get the JSX -> JS transformation going.
+Give Webpack the single babel-loader we installed then that loader will look to a .babelrc file that we'll make for each of the babel transformations you want to make.
+
+First, in the same directory where the webpack.config.js file is (usually the root directory), we'll need to make a .babelrc file which looks like this
+// In .babelrc
+  {
+    "presets": [
+      "react"
+    ]
+  }
+
+  // In webpack.config.js
+  loaders: [
+      {test: /\.js$/, exclude: /node_modules/, loader: "babel-loader"}
+    ]
