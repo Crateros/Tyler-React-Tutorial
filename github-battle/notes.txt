@@ -1,0 +1,40 @@
+  var HelloWorld = React.createClass({
+    render: function () {
+      return (
+        <div>Hello {this.props.name}</div>
+      )
+    }
+  })
+  ReactDOM.render(<HelloWorld name='Tyler' />, document.getElementById('app'))
+
+Here's an example you've seen before and you should be very comfortable with at this point. We've created a new React component that returns us a div that says "Hello " + whatever name you passed in when you invoked the component.
+
+You'll notice that this component just has a render method, that means we can remove the createClass abstraction and just use a plain function. Refactored to use a stateless functional component, the example above would look like this
+
+  function HelloWorld (props) {
+    return (
+      <div>Hello {props.name}</div>
+    )
+  }
+  ReactDOM.render(<HelloWorld name='Tyler' />, document.getElementById('app'))
+
+Currently the biggest downfall with Stateless Functional Components are that they don't support shouldComponentUpdate
+
+-----------------------
+
+
+PropTypes.
+
+  var React = require('react')
+  var PropTypes = React.PropTypes
+  var Icon = React.createClass({
+    propTypes: {
+      name: PropTypes.string.isRequired,
+      size: PropTypes.number.isRequired,
+      color: PropTypes.string.isRequired,
+      style: PropTypes.object
+    },
+    render: ...
+  });
+
+To use PropTypes with functions the API is propTypes.func rather than propTypes.function. Also to use booleans, the API is propTypes.bool not propTypes.boolean
