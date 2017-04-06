@@ -1,0 +1,98 @@
+React Life Cycle Events:
+
+1. When a component gets mounted / unmounted from the DOM (initialized)
+  -Only initialized once during the lifetime of component
+  Concerns: Establish default props
+  Set some initial state
+  Make AJAX request to fetch some needed data
+  Setup any listeners
+  Remove any listeners when unmounting
+
+
+- If no props provided, can use default props - getDefaultProps method:
+
+    var Loading = React.createClass({
+      getDefaultProps: function () {
+        return {
+          text: 'Loading'
+        }
+      },
+      render: function () {
+        ...
+      }
+    })
+
+- If you need to set some initial state - getInitialState
+
+  var Login = React.createClass({
+    getInitialState: function () {
+      return {
+        email: '',
+        password: ''
+      }
+    },
+    render: function () {
+      ...
+    }
+  })
+
+Above we've used getInitialState to set an email and password property on our
+state object in our Login component. To update the state, you can call
+this.setState passing in a new object which overwrites one or both of the
+email and password properties.
+
+
+- Make an AJAX request to fetch some data needed for this component, use
+componentDidMount, this ensures that the request fires once the component has
+mounted to the DOM.
+
+    var FriendsList = React.createClass({
+    componentDidMount: function () {
+      return Axios.get(this.props.url).then(this.props.callback)
+    },
+    render: function () {
+      ...
+    }
+    })
+
+
+- Setup listeners can use componentDidMount as well
+
+    var FriendsList = React.createClass({
+    componentDidMount: function () {
+      ref.on('value', function (snapshot) {
+        this.setState({
+          friends: snapshot.val()
+        })
+      })
+    },
+    render: function () {
+      ...
+    }
+    })
+
+
+And to remove listeners. componentWillUnmount
+
+    var FriendsList = React.createClass({
+      componentWillUnmount: function () {
+        ref.off()
+      },
+      render: function () {
+        ...
+      }
+    })
+
+    So what happens when component receives new data
+
+
+
+
+
+
+
+
+
+
+
+2. When a component receives new data
