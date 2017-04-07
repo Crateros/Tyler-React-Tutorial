@@ -24,6 +24,7 @@ var PromptContainer = React.createClass({
       username: event.target.value
     })
   },
+  //Capture user submitted username, then reset state for playerTwo
   handleSubmitUser: function(event) {
     event.preventDefault();
     var username = this.state.username;

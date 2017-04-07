@@ -83,9 +83,12 @@ And to remove listeners. componentWillUnmount
       }
     })
 
-    So what happens when component receives new data
+    So what happens when component receives new data from parent?
 
-
+componentWillReceiveProps - executes code as soon as component receives new
+props. Also, shouldComponentUpdate which returns boolean, if true, component
+will re-render / if false will stay the same.
+(Selective rendering = huge performance gain).
 
 
 
