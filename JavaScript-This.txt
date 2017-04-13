@@ -22,13 +22,13 @@ var me = {
   }
 };
 
-//Implicit binding says look to left of the Dot, that is what 'this' is referencing
+//Implicit binding says look to left of the Dot at Call Time, that is what 'this' is referencing
 me.sayName();
 
 
 
 
-ar sayNameMixin = function(obj) {
+var sayNameMixin = function(obj) {
   obj.sayName = function() {
     console.log(this.name);
   };
@@ -153,7 +153,7 @@ var me = {
   age: 25
 };
 
-//This keyword will default to window object
+//This keyword will default to window object unless you are in strict mode in which case it will be undefined
 sayAge(); <--------- undefined
 window.age = 35;
 sayAge(); <------------- 35
