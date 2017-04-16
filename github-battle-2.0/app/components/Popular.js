@@ -60,7 +60,7 @@ function RepoGrid(props) {
                   alt={'Avatar for' + repo.owner.login} />
               </li>
               <li>
-                <a href={repo.html_url}>{repo.name}</a>
+                <a target="_blank" href={repo.html_url}>{repo.name}</a>
               </li>
               <li>
                 @{repo.owner.login}
@@ -101,7 +101,6 @@ class Popular extends React.Component {
     //AJAX in here. updateLanguage function invokes API call function
     this.updateLanguage(this.state.selectedLanguage);
   }
-
 
   updateLanguage(language) {
     this.setState(function () {
