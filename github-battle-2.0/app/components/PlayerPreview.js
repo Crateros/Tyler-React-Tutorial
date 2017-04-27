@@ -1,4 +1,5 @@
 var React = require('react');
+var PropTypes = require('prop-types');
 
 //Stateless functional component
 function PlayerPreview(props) {
@@ -12,12 +13,7 @@ function PlayerPreview(props) {
           alt={'Avatar for ' + props.username} />
         <h2 className='username'>@{props.username}</h2>
       </div>
-      <button
-        className='reset'
-        // Needs the id of which player is requesting reset
-        onClick={props.onReset.bind(null, props.id)}>
-          Reset
-      </button>
+      {props.children}
     </div>
   )
 }
@@ -25,8 +21,8 @@ function PlayerPreview(props) {
 PlayerPreview.propTypes = {
   avatar: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
-  onReset: PropTypes.func.isRequired,
-  id: PropTypes.string.isRequired
+  // onReset: PropTypes.func.isRequired,
+  // id: PropTypes.string.isRequired
 };
 
 module.exports = PlayerPreview;

@@ -1,6 +1,7 @@
 var React = require('react');
 var PropTypes = require('prop-types');
 var api = require('../utils/api');
+var Loading = require('./Loading');
 
 //Stateless functional component, pass in props as argument, no state, receives everything as props
 function SelectLanguage(props) {
@@ -130,7 +131,7 @@ class Popular extends React.Component {
           {/* {JSON.stringify(this.state.repos, null, 2)} */}
           {/* Wait for repos to get returned from api before attempting to render RepoGrid */}
           {!this.state.repos
-            ? <p>LOADING...</p>
+            ? <Loading text='Fetching Repos' speed={200}/>
             : <RepoGrid repos={this.state.repos} />}
       </div>
     )
